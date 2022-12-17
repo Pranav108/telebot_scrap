@@ -1,17 +1,21 @@
 const express = require("express");
 const app = express();
+const fs = require("fs");
 const bodyParser = require("body-parser");
 const { google } = require("googleapis");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-let dataArray = [
-  ["10001", "pranav_ps", "Pranav", "Singh", "17-dec", "20-dec"],
-  ["10001", "pranav_ps", "Prayag", "Singh", "17-dec", "20-dec"],
-  ["10001", "pranav_ps", "Pranav", "Singh", "17-dec", "20-dec"],
-  ["10001", "pranav_ps", "Prayag", "Singh", "17-dec", "20-dec"],
-];
+// let dataArray = [
+//   ["10001", "pranav_ps", "Pranav", "Singh", "17-dec", "20-dec"],
+//   ["10001", "pranav_ps", "Prayag", "Singh", "17-dec", "20-dec"],
+//   ["10001", "pranav_ps", "Pranav", "Singh", "17-dec", "20-dec"],
+//   ["10001", "pranav_ps", "Prayag", "Singh", "17-dec", "20-dec"],
+// ];
+const apiData = fs.readFileSync(`sheetData.json`);
+const sheetData = JSON.parse(apiData);
+
 app.get("/google-sheet", async (req, res) => {
   const auth = new google.auth.GoogleAuth({
     keyFile: "secret-key.json",
@@ -36,7 +40,7 @@ app.get("/google-sheet", async (req, res) => {
     spreadsheetId,
     range: "User_Master!A:F",
     valueInputOption: "USER_ENTERED",
-    resource: { values: dataArray },
+    resource: { values: sheetData },
   });
 
   // // Read rows from spreadsheet

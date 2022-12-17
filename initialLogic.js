@@ -42,5 +42,20 @@ fs.readFile("result.json", "utf-8", (err1, data) => {
     else console.log("other object Type Found!!");
   }
   console.log("Users List : ");
-  for (var [key, val] of usersList) console.log(key, val);
+  const sheetData = [];
+  for (var [key, val] of usersList) {
+    const tempArrr = [];
+    tempArrr.push(val.user_id || "");
+    tempArrr.push(key);
+    tempArrr.push(val.first_name || "");
+    tempArrr.push(val.last_name || "");
+    tempArrr.push(val.date_of_joining || "");
+    tempArrr.push(val.date_of_leaving || "");
+    sheetData.push(tempArrr);
+  }
+
+  fs.writeFile("sheetData.json", JSON.stringify(sheetData), "utf-8", (err) => {
+    if (err) throw err;
+    console.log("file written successFully!");
+  });
 });

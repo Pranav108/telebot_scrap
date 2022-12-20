@@ -7,16 +7,10 @@ const { google } = require("googleapis");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// let dataArray = [
-//   ["10001", "pranav_ps", "Pranav", "Singh", "17-dec", "20-dec"],
-//   ["10001", "pranav_ps", "Prayag", "Singh", "17-dec", "20-dec"],
-//   ["10001", "pranav_ps", "Pranav", "Singh", "17-dec", "20-dec"],
-//   ["10001", "pranav_ps", "Prayag", "Singh", "17-dec", "20-dec"],
-// ];
 const apiData = fs.readFileSync(`sheetData.json`);
 const sheetData = JSON.parse(apiData);
 
-app.get("/google-sheet", async (req, res) => {
+app.get("/add-telegram-data", async (req, res) => {
   const auth = new google.auth.GoogleAuth({
     keyFile: "secret-key.json",
     scopes: "https://www.googleapis.com/auth/spreadsheets",
@@ -27,6 +21,7 @@ app.get("/google-sheet", async (req, res) => {
   const googleSheets = google.sheets({ version: "v4", auth: client });
 
   const spreadsheetId = "1J2X4YkqGS1WLDpwGYd20ohSVeoSSX0_xQQeRH0rdHpY";
+  // this is our sheet id, which is available in sheet's link
 
   // Get metadata about spreadsheet
   const metaData = await googleSheets.spreadsheets.get({
@@ -50,19 +45,8 @@ app.get("/google-sheet", async (req, res) => {
     range: "User_Master",
   });
   res.send(getRows.data);
-  ///////////////////////////////////////////////////
-
-  // const HEADERS = [
-  //   "User_ID",
-  //   "User_Name",
-  //   "First_Name",
-  //   "Last_Name",
-  //   "Date_of_Joining",
-  //   "Date_of_Leaving",
-  // ];
-  // await sheet.setHeaderRow(HEADERS);
-
-  // await sheet.addRow(dataArray);
 });
 
 app.listen(3002, () => console.log(`appp listening at port 3002`));
+
+// url used : http://localhost:3002/add-telegram-data

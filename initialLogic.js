@@ -43,12 +43,20 @@ fs.readFile("result.json", "utf-8", (err1, data) => {
   }
   console.log("Users List : ");
   const sheetData = [];
+
   for (var [key, val] of usersList) {
     const tempArrr = [];
     tempArrr.push(val.user_id || "");
     tempArrr.push(key);
-    tempArrr.push(val.first_name || "");
-    tempArrr.push(val.last_name || "");
+    const temp = key.split(" ");
+    const first_name = temp.shift();
+    const last_name = temp.join(" ");
+    tempArrr.push(first_name || "");
+    tempArrr.push(last_name || "");
+
+    //if there were first_name and last_name in val
+    // tempArrr.push(val.first_name || "");
+    // tempArrr.push(val.last_name || "");
     tempArrr.push(val.date_of_joining || "");
     tempArrr.push(val.date_of_leaving || "");
     sheetData.push(tempArrr);

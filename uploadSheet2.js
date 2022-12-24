@@ -7,10 +7,10 @@ const { google } = require("googleapis");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const apiData = fs.readFileSync(`sheetData.json`);
+const apiData = fs.readFileSync(`telegramMaster.json`);
 const sheetData = JSON.parse(apiData);
 
-app.get("/add-telegram-data", async (req, res) => {
+app.get("/add-user-master", async (req, res) => {
   const auth = new google.auth.GoogleAuth({
     keyFile: "secret-key.json",
     scopes: "https://www.googleapis.com/auth/spreadsheets",
@@ -33,7 +33,7 @@ app.get("/add-telegram-data", async (req, res) => {
   await googleSheets.spreadsheets.values.append({
     auth,
     spreadsheetId,
-    range: "User_Master!A:F",
+    range: "Telegram_Master!A:G",
     valueInputOption: "USER_ENTERED",
     resource: { values: sheetData },
   });

@@ -44,8 +44,9 @@ fs.readFile("result.json", "utf-8", (err1, data) => {
   console.log("Users List : ");
   const sheetData = [];
 
+  let primary_id = 1;
   for (var [key, val] of usersList) {
-    const tempArrr = [];
+    const tempArrr = [++primary_id];
     tempArrr.push(val.user_id || "");
     tempArrr.push(key);
     const temp = key.split(" ");
@@ -53,10 +54,6 @@ fs.readFile("result.json", "utf-8", (err1, data) => {
     const last_name = temp.join(" ");
     tempArrr.push(first_name || "");
     tempArrr.push(last_name || "");
-
-    //if there were first_name and last_name in val
-    // tempArrr.push(val.first_name || "");
-    // tempArrr.push(val.last_name || "");
     tempArrr.push(val.date_of_joining || "");
     tempArrr.push(val.date_of_leaving || "");
     sheetData.push(tempArrr);
